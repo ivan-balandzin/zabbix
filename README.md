@@ -7,5 +7,5 @@ Zabbix readme file
 ![alt tag](https://github.com/ivan-balandzin/zabbix/blob/Task1/5.jpg)
 ![alt tag](https://github.com/ivan-balandzin/zabbix/blob/Task1/6.jpg)
 ![alt tag](https://github.com/ivan-balandzin/zabbix/blob/Task1/7.jpg)
-![alt tag](https://github.com/ivan-balandzin/zabbix/blob/Task1/8.jpg)
+![alt tag](https://github.com/ivan-balandzin/zabbix/blob/Task1/8-.jpg)
 ![alt tag](https://github.com/ivan-balandzin/zabbix/blob/Task1/9.jpg)
