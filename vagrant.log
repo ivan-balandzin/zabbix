@@ -1,0 +1,74 @@
+==> default: Running provisioner: ansible...
+    default: Running ansible-playbook...
+PYTHONUNBUFFERED=1 ANSIBLE_NOCOLOR=true ANSIBLE_HOST_KEY_CHECKING=false ANSIBLE_SSH_ARGS='-o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes -o ControlMaster=auto -o ControlPersist=60s' ansible-playbook --connection=ssh --timeout=30 --limit='default' --inventory-file=/root/Desktop/Zabbix/Zabbix Server/.vagrant/provisioners/ansible/inventory -vv provision.yml
+No config file found; using defaults
+1 plays in provision.yml
+
+PLAY [Zabbix server installation] **********************************************
+
+TASK [setup] *******************************************************************
+ok: [default]
+
+TASK [MySQL instalation] *******************************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:6
+changed: [default] => (item=[u'mysql', u'mysql-server', u'MySQL-python']) => {"changed": true, "item": ["mysql", "mysql-server", "MySQL-python"], "msg": "", "rc": 0, "results": ["mysql-5.1.73-5.el6_7.1.x86_64 providing mysql is already installed", "mysql-server-5.1.73-5.el6_7.1.x86_64 providing mysql-server is already installed", "Loaded plugins: fastestmirror\nSetting up Install Process\nLoading mirror speeds from cached hostfile\n * base: ftp.byfly.by\n * epel: mirror.datacenter.by\n * extras: ftp.byfly.by\n * updates: ftp.byfly.by\nResolving Dependencies\n--> Running transaction check\n---> Package MySQL-python.x86_64 0:1.2.3-0.3.c1.1.el6 will be installed\n--> Finished Dependency Resolution\n\nDependencies Resolved\n\n================================================================================\n Package             Arch          Version                    Repository   Size\n================================================================================\nInstalling:\n MySQL-python        x86_64        1.2.3-0.3.c1.1.el6         base         86 k\n\nTransaction Summary\n================================================================================\nInstall       1 Package(s)\n\nTotal download size: 86 k\nInstalled size: 246 k\nDownloading Packages:\nRunning rpm_check_debug\nRunning Transaction Test\nTransaction Test Succeeded\nRunning Transaction\n\r  Installing : MySQL-python-1.2.3-0.3.c1.1.el6.x86_64                       1/1 \n\r  Verifying  : MySQL-python-1.2.3-0.3.c1.1.el6.x86_64                       1/1 \n\nInstalled:\n  MySQL-python.x86_64 0:1.2.3-0.3.c1.1.el6                                      \n\nComplete!\n"]}
+
+TASK [Correcting (replacing) my.cnf file] **************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:15
+ok: [default] => {"changed": false, "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/my.cnf", "size": 275, "state": "file", "uid": 0}
+
+TASK [MySQL initial configuration] *********************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:18
+changed: [default] => {"changed": true, "cmd": "/usr/bin/mysql_install_db --user=mysql", "delta": "0:00:00.113581", "end": "2016-04-25 19:20:11.567135", "rc": 0, "start": "2016-04-25 19:20:11.453554", "stderr": "", "stdout": "Installing MySQL system tables...\nOK\nFilling help tables...\nOK\n\nTo start mysqld at boot time you have to copy\nsupport-files/mysql.server to the right place for your system\n\nPLEASE REMEMBER TO SET A PASSWORD FOR THE MySQL root USER !\nTo do so, start the server, then issue the following commands:\n\n/usr/bin/mysqladmin -u root password 'new-password'\n/usr/bin/mysqladmin -u root -h Zabbixserver password 'new-password'\n\nAlternatively you can run:\n/usr/bin/mysql_secure_installation\n\nwhich will also give you the option of removing the test\ndatabases and anonymous user created by default.  This is\nstrongly recommended for production servers.\n\nSee the manual for more instructions.\n\nYou can start the MySQL daemon with:\ncd /usr ; /usr/bin/mysqld_safe &\n\nYou can test the MySQL daemon with mysql-test-run.pl\ncd /usr/mysql-test ; perl mysql-test-run.pl\n\nPlease report any problems with the /usr/bin/mysqlbug script!", "stdout_lines": ["Installing MySQL system tables...", "OK", "Filling help tables...", "OK", "", "To start mysqld at boot time you have to copy", "support-files/mysql.server to the right place for your system", "", "PLEASE REMEMBER TO SET A PASSWORD FOR THE MySQL root USER !", "To do so, start the server, then issue the following commands:", "", "/usr/bin/mysqladmin -u root password 'new-password'", "/usr/bin/mysqladmin -u root -h Zabbixserver password 'new-password'", "", "Alternatively you can run:", "/usr/bin/mysql_secure_installation", "", "which will also give you the option of removing the test", "databases and anonymous user created by default.  This is", "strongly recommended for production servers.", "", "See the manual for more instructions.", "", "You can start the MySQL daemon with:", "cd /usr ; /usr/bin/mysqld_safe &", "", "You can test the MySQL daemon with mysql-test-run.pl", "cd /usr/mysql-test ; perl mysql-test-run.pl", "", "Please report any problems with the /usr/bin/mysqlbug script!"], "warnings": []}
+
+TASK [MySQL-server startup] ****************************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:21
+ok: [default] => {"changed": false, "enabled": true, "name": "mysqld", "state": "started"}
+
+TASK [Zabbix repository installation] ******************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:24
+ok: [default] => {"changed": false, "msg": "", "rc": 0, "results": ["http://repo.zabbix.com/zabbix/2.2/rhel/6/x86_64/zabbix-release-2.2-1.el6.noarch.rpm: Nothing to do"]}
+
+TASK [Installing zabbix components] ********************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:29
+ok: [default] => (item=[u'zabbix', u'zabbix-server', u'zabbix-server-mysql', u'zabbix-web-mysql', u'zabbix-agent']) => {"changed": false, "item": ["zabbix", "zabbix-server", "zabbix-server-mysql", "zabbix-web-mysql", "zabbix-agent"], "msg": "", "rc": 0, "results": ["zabbix-2.2.12-1.el6.x86_64 providing zabbix is already installed", "zabbix-server-2.2.12-1.el6.x86_64 providing zabbix-server is already installed", "zabbix-server-mysql-2.2.12-1.el6.x86_64 providing zabbix-server-mysql is already installed", "zabbix-web-mysql-2.2.12-1.el6.noarch providing zabbix-web-mysql is already installed", "zabbix-agent-2.2.12-1.el6.x86_64 providing zabbix-agent is already installed"]}
+
+TASK [Creating Zabbix MySQL database] ******************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:40
+changed: [default] => {"changed": true, "db": "zabbix"}
+
+TASK [Creating Zabbix MySQL user] **********************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:43
+changed: [default] => {"changed": true, "user": "VALUE_SPECIFIED_IN_NO_LOG_PARAMETER"}
+
+TASK [Importing initial schema to Zabbix] **************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:46
+changed: [default] => {"changed": true, "cmd": "mysql -uroot zabbix < /usr/share/doc/zabbix-server-mysql-2.2.12/create/schema.sql", "delta": "0:00:02.404643", "end": "2016-04-25 19:20:17.054870", "rc": 0, "start": "2016-04-25 19:20:14.650227", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
+
+TASK [Importing initial image to Zabbix] ***************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:49
+changed: [default] => {"changed": true, "cmd": "mysql -uroot zabbix < /usr/share/doc/zabbix-server-mysql-2.2.12/create/images.sql", "delta": "0:00:00.220304", "end": "2016-04-25 19:20:17.606965", "rc": 0, "start": "2016-04-25 19:20:17.386661", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
+
+TASK [Importing initial data to Zabbix] ****************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:52
+changed: [default] => {"changed": true, "cmd": "mysql -uroot zabbix < /usr/share/doc/zabbix-server-mysql-2.2.12/create/data.sql", "delta": "0:00:00.347855", "end": "2016-04-25 19:20:18.284768", "rc": 0, "start": "2016-04-25 19:20:17.936913", "stderr": "", "stdout": "", "stdout_lines": [], "warnings": []}
+
+TASK [Replacing zabbix.conf to change Zabbix prefix] ***************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:55
+changed: [default] => {"changed": true, "checksum": "6a5285098e986a9806daa64ee59f91f7624843e1", "dest": "/etc/httpd/conf.d/zabbix.conf", "gid": 0, "group": "root", "md5sum": "89f2fad1a6eea4aa51c365b28e15fffe", "mode": "0644", "owner": "root", "size": 1259, "src": "/home/vagrant/.ansible/tmp/ansible-tmp-1461601218.31-193542206504751/source", "state": "file", "uid": 0}
+
+TASK [Replacing config of Zabbix server] ***************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:58
+changed: [default] => {"changed": true, "checksum": "d6c38bbcb3740d18fb0d81fde7f7330223d3f922", "dest": "/etc/zabbix/zabbix_server.conf", "gid": 497, "group": "zabbix", "md5sum": "d7cbc4fdec886ae9400cb2944fa24f72", "mode": "0640", "owner": "root", "size": 13095, "src": "/home/vagrant/.ansible/tmp/ansible-tmp-1461601218.97-225550073902687/source", "state": "file", "uid": 0}
+
+TASK [Starting zabbix-server] **************************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:61
+changed: [default] => {"changed": true, "enabled": true, "name": "zabbix-server", "state": "started"}
+
+TASK [Starting httpd] **********************************************************
+task path: /root/Desktop/Zabbix/Zabbix Server/provision.yml:64
+changed: [default] => {"changed": true, "enabled": true, "name": "httpd", "state": "started"}
+
+PLAY RECAP *********************************************************************
+default                    : ok=16   changed=11   unreachable=0    failed=0   
+

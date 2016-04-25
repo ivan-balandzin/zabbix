@@ -1,0 +1,65 @@
+- name: Zabbix server installation
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: MySQL instalation
+      yum: 
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - mysql
+        - mysql-server
+        - MySQL-python
+
+    - name: Correcting (replacing) my.cnf file
+      template: src=my.cnf dest=/etc/
+
+    - name: MySQL initial configuration
+      shell: /usr/bin/mysql_install_db --user=mysql
+
+    - name:  MySQL-server startup
+      service: name=mysqld state=started enabled=yes
+
+    - name: Zabbix repository installation 
+      yum:
+        name: "http://repo.zabbix.com/zabbix/2.2/rhel/6/x86_64/zabbix-release-2.2-1.el6.noarch.rpm"
+        state: present
+
+    - name: Installing zabbix components
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - zabbix 
+        - zabbix-server 
+        - zabbix-server-mysql 
+        - zabbix-web-mysql
+        - zabbix-agent
+
+    - name: Creating Zabbix MySQL database 
+      mysql_db: name=zabbix encoding=utf8 collation=utf8_bin state=present
+
+    - name: Creating Zabbix MySQL user
+      mysql_user: name=zabbix password=zabbix priv=zabbix.*:ALL
+
+    - name: Importing initial schema to Zabbix
+      shell: mysql -uroot zabbix < /usr/share/doc/zabbix-server-mysql-2.2.12/create/schema.sql
+
+    - name: Importing initial image to Zabbix
+      shell: mysql -uroot zabbix < /usr/share/doc/zabbix-server-mysql-2.2.12/create/images.sql
+
+    - name: Importing initial data to Zabbix
+      shell: mysql -uroot zabbix < /usr/share/doc/zabbix-server-mysql-2.2.12/create/data.sql
+
+    - name: Replacing zabbix.conf to change Zabbix prefix
+      template: src=zabbix.conf dest=/etc/httpd/conf.d/
+
+    - name: Replacing config of Zabbix server
+      template: src=zabbix_server.conf dest=/etc/zabbix/
+
+    - name: Starting zabbix-server
+      service: name=zabbix-server state=started enabled=yes
+
+    - name: Starting httpd
+      service: name=httpd state=started enabled=yes
